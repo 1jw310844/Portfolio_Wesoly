@@ -1,0 +1,343 @@
+﻿<Window x:Class="WSPPCars.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WSPPCars"
+        mc:Ignorable="d"
+        Title="WSPP CAR$ - wypożyczalnia samochodów" Height="630" Width="1080" MinWidth="1080" MinHeight="550" Background="#303030">
+    <Window.Resources>
+        <!-- Kompletny styl dla ScrollBar -->
+        <Style TargetType="Thumb">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Background="#FFFF5D00"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            CornerRadius="3" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <!-- Tło ScrollBar -->
+                            <Border BorderBrush="Black" BorderThickness="0" CornerRadius="10" Margin="12,0,0,12">
+                                <Track Name="PART_Track" IsDirectionReversed="True">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="ScrollBar.LineLeftCommand" Background="#101010" BorderThickness="0" />
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb Background="#FFFF5D00" />
+                                    </Track.Thumb>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="ScrollBar.LineRightCommand" Background="#101010" BorderThickness="0"/>
+                                    </Track.IncreaseRepeatButton>
+                                </Track>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <Grid Margin="0,0,0,-6" Background="Black">
+        <Image Source="./Images/Logo.png" Height="161" VerticalAlignment="Top" Margin="0,13,158,0"/>
+        <Border BorderBrush="#FFFF5D00" BorderThickness="2" CornerRadius="10" Background="#202020" Margin="30,166,264,20">
+            <ListView x:Name="listboxOgloszenia"  Margin="8,8,8,8" MouseDoubleClick="listboxOgloszenia_MouseDoubleClick_1" Background="#202020" BorderThickness="0" BorderBrush="#202020">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border x:Name="itemBorder" 
+                                Background="#202020" 
+                                BorderBrush="Transparent" 
+                                BorderThickness="0" 
+                                CornerRadius="4" 
+                                Margin="2">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="itemBorder" Property="Background" Value="#131313"/>
+                                            <Setter TargetName="itemBorder" Property="BorderBrush" Value="#FFFFA500"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="itemBorder" Property="Background" Value="#505050"/>
+                                            <Setter TargetName="itemBorder" Property="BorderBrush" Value="#FFFF5D00"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="10,5,5,5">
+                            <Image Source="{Binding IdPojazduNavigation.IdSztukiNavigation.Zdjecie}" Width="160" Height="110" Margin="0"/>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="{Binding IdPojazduNavigation.IdSztukiNavigation.Marka}" FontWeight="Bold" FontSize="18" Foreground="#FFFF5D00" FontFamily="Bahnschrift"/>
+                                <TextBlock Text="{Binding IdPojazduNavigation.IdSztukiNavigation.Model}" FontWeight="Bold" FontSize="14" Foreground="White"/>
+                                <TextBlock Text="{Binding Kwota, StringFormat=Cena: {0} PLN}"  FontSize="14" Foreground="White"/>
+                                <TextBlock Text="{Binding IdPojazduNavigation.IdSztukiNavigation.LiczbaDrzwi, StringFormat=Ilość drzwi: {0}}"  FontSize="14" Foreground="White"/>
+                                <TextBlock Text="{Binding IdPojazduNavigation.IdSztukiNavigation.PojemnoscSilnika, StringFormat=Pojemność silnika: {0}}"  FontSize="14" Foreground="White"/>
+                                <TextBlock Text="{Binding IdPojazduNavigation.IdSztukiNavigation.LiczbaPasazerow, StringFormat=Ilość osób: {0}}"  FontSize="14" Foreground="White"/>
+                                <TextBlock Text="{Binding IdPojazduNavigation.IdSztukiNavigation.AutomatycznaSkrzynia}"  FontSize="14" Foreground="White"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+        </Border>
+        <Border x:Name="borderFiltry" BorderBrush="#FFFF5D00" Background="#202020" BorderThickness="1" Margin="0,166,27,20" HorizontalAlignment="Right" Width="216" CornerRadius="10">
+            <StackPanel Margin="10">
+                <TextBlock Text="Filtry" TextAlignment="Center" FontWeight="Bold" FontSize="18" Foreground="#FFFFFF" FontFamily="Bahnschrift" Margin="0,0,0,5"/>
+
+                <!-- Wybór dat -->
+                <TextBlock Text="Od:" Foreground="White" FontFamily="Bahnschrift" Margin="0,5,0,2"/>
+                <DatePicker x:Name="datePoczatek" Height="24" Width="Auto" Margin="0,0,0,5"/>
+
+                <TextBlock Text="Do:" Foreground="White" FontFamily="Bahnschrift" Margin="0,5,0,2"/>
+                <DatePicker x:Name="dateKoniec" Height="24" Width="Auto" Margin="0,0,0,3"/>
+
+                <!-- Dodatki jako lista wielokrotnego wyboru -->
+                
+                <TextBlock Text="Marka:" Foreground="White" FontFamily="Bahnschrift" Margin="0,2,0,2"/>
+                <ComboBox x:Name="comboMarka"
+                Background="#202020"
+                Foreground="Black"
+                FontFamily="Bahnschrift"
+                BorderBrush="#404040"
+                BorderThickness="1"
+                Height="20"
+                SelectionChanged="comboMarka_SelectionChanged"
+                />
+                <TextBlock Text="Model:" Foreground="White" FontFamily="Bahnschrift" Margin="0,5,0,2"/>
+                <ComboBox x:Name="comboModel"
+                Background="#202020"
+                Foreground="Black"
+                FontFamily="Bahnschrift"
+                BorderBrush="#404040"
+                BorderThickness="1"
+                Height="20"
+                SelectionChanged="comboModel_SelectionChanged"
+                />
+                <TextBlock Text="Rocznik:" Foreground="White" FontFamily="Bahnschrift" Margin="0,10,0,2"/>
+                <ComboBox x:Name="comboRocznik"
+                Background="#202020"
+                Foreground="Black"
+                FontFamily="Bahnschrift"
+                BorderBrush="#404040"
+                BorderThickness="1"
+                Height="20"
+                SelectionChanged="comboRocznik_SelectionChanged"
+                />
+
+                <!-- Ubezpieczenie -->
+                <TextBlock Text="Rodzaj:" Foreground="White" FontFamily="Bahnschrift" Margin="0,10,0,2"/>
+                <ComboBox x:Name="comboRodzajPojazdu" FontFamily="Bahnschrift" Margin="0,0,0,10" Height="20" SelectionChanged="comboUbezpieczenie_SelectionChanged">
+                    <ComboBoxItem Content="Spalinowe" />
+                    <ComboBoxItem Content="Hybrydowe" />
+                    <ComboBoxItem Content="Elektryczne" />
+                </ComboBox>
+                <Button x:Name="btnWyszukaj"
+        Content="Wyszukaj"
+        Height="30"
+        FontFamily="Bahnschrift"
+        FontWeight="Bold"
+        Foreground="Black"
+        Margin="0,10,0,0"
+        Click="btnWyszukaj_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="#FFFF5D00"
+                    BorderBrush="#EEEE4C00"
+                    BorderThickness="2"
+                    CornerRadius="15"
+                    x:Name="border">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#DDDD4C00"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button x:Name="btnResetuj"
+        Content="Resetuj"
+        Height="30"
+        Margin="0,8,0,0"
+        FontFamily="Bahnschrift"
+        FontWeight="Bold"
+        Foreground="Black"
+        Click="btnResetuj_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="#FFFF5D00"
+                    BorderBrush="#EEEE4C00"
+                    BorderThickness="2"
+                    CornerRadius="15"
+                    x:Name="border">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#DDDD4C00"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </StackPanel>
+        </Border>
+
+
+        <Button x:Name="btnLogowanie" Content="Zaloguj się" Margin="0,13,27,0" VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="216" Click="btnLogowanie_Click" FontFamily="Bahnschrift" FontWeight="Bold" Foreground="Black">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="#FFFF5D00" 
+        BorderBrush="#EEEE4C00" 
+        BorderThickness="2"
+        CornerRadius="15"
+        x:Name="border">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#DDDD4C00"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button x:Name="btnKonto" Content="Konto" 
+        Margin="0,85,27,0" 
+        VerticalAlignment="Top" 
+        Height="26" 
+        Width="216"
+        HorizontalAlignment="Right"
+        Click="btnKonto_Click" 
+        FontFamily="Bahnschrift" 
+        FontWeight="Bold" 
+        Foreground="Black">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="#FFFF5D00" 
+                    BorderBrush="#EEEE4C00" 
+                    BorderThickness="2"
+                    CornerRadius="15"
+                    x:Name="border">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#DDDD4C00"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button x:Name="btnAdminPanel" 
+        Content="Panel administratora" 
+        Margin="0,120,27,0" 
+        VerticalAlignment="Top" 
+        Height="26" 
+        Width="216" 
+        HorizontalAlignment="Right" 
+        Click="btnAdminPanel_Click"
+        FontFamily="Bahnschrift" 
+        FontWeight="Bold" 
+        Foreground="Black">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="#FFFF5D00" 
+                    BorderBrush="#EEEE4C00" 
+                    BorderThickness="2" 
+                    CornerRadius="15" 
+                    x:Name="border">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#DDDD4C00"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button x:Name="btnRejestracja"
+        Content="Zarejestruj się"
+        Margin="0,48,27,0"
+        VerticalAlignment="Top"
+        Height="26"
+        HorizontalAlignment="Right"
+        Width="216"
+        FontFamily="Bahnschrift"
+        FontWeight="Bold"
+        Foreground="Black"
+        Click="btnRejestracja_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="#FFFF5D00"
+                    BorderBrush="#EEEE4C00"
+                    BorderThickness="2"
+                    CornerRadius="15"
+                    x:Name="border">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#DDDD4C00"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#DDDD4C00"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+
+    </Grid>
+</Window>

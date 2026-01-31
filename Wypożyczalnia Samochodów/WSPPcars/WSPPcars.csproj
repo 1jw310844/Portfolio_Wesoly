@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\bmw.jpg" />
+    <None Remove="Images\bmw1.jpg" />
+    <None Remove="Images\LOGO.png" />
+    <None Remove="Images\porshe.jpg" />
+    <None Remove="Images\toyota.jpg" />
+    <None Remove="Images\WSPPLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Stripe.net" Version="48.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\bmw.jpg" />
+    <Resource Include="Images\bmw1.jpg" />
+    <Resource Include="Images\LOGO.png" />
+    <Resource Include="Images\porshe.jpg" />
+    <Resource Include="Images\toyota.jpg" />
+    <Resource Include="Images\WSPPLogo.png" />
+  </ItemGroup>
+
+</Project>
